@@ -4,11 +4,24 @@
   
     
     <entry>
+      <title>post_name</title>
+      <link href="/2025/01/22/post-name/"/>
+      <url>/2025/01/22/post-name/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何搭建属于自己的静态博客网站</title>
       <link href="/2025/01/22/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/"/>
       <url>/2025/01/22/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</url>
       
-        <content type="html"><![CDATA[<h1 id="Front-matter-配置"><a href="#Front-matter-配置" class="headerlink" title="Front matter 配置"></a>Front matter 配置</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title:</span><br><span class="line">date:</span><br><span class="line">updated:</span><br><span class="line">tags:</span><br><span class="line">categories:</span><br><span class="line">keywords:</span><br><span class="line">description:</span><br><span class="line">top_img:</span><br><span class="line">comments:</span><br><span class="line">cover:</span><br><span class="line">toc:</span><br><span class="line">toc_number:</span><br><span class="line">toc_style_simple:</span><br><span class="line">copyright:</span><br><span class="line">copyright_author:</span><br><span class="line">copyright_author_href:</span><br><span class="line">copyright_url:</span><br><span class="line">copyright_info:</span><br><span class="line">mathjax:</span><br><span class="line">katex:</span><br><span class="line">aplayer:</span><br><span class="line">highlight_shrink:</span><br><span class="line">aside:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>]]></content>
+        <content type="html"><![CDATA[<h1>Front matter 配置</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title:</span><br><span class="line">date:</span><br><span class="line">updated:</span><br><span class="line">tags:</span><br><span class="line">categories:</span><br><span class="line">keywords:</span><br><span class="line">description:</span><br><span class="line">top_img:</span><br><span class="line">comments:</span><br><span class="line">cover:</span><br><span class="line">toc:</span><br><span class="line">toc_number:</span><br><span class="line">toc_style_simple:</span><br><span class="line">copyright:</span><br><span class="line">copyright_author:</span><br><span class="line">copyright_author_href:</span><br><span class="line">copyright_url:</span><br><span class="line">copyright_info:</span><br><span class="line">mathjax:</span><br><span class="line">katex:</span><br><span class="line">aplayer:</span><br><span class="line">highlight_shrink:</span><br><span class="line">aside:</span><br><span class="line">---</span><br></pre></td></tr></table></figure>]]></content>
       
       
       

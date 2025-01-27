@@ -11,6 +11,12 @@
         <content type="html"><![CDATA[<h1>win11系统出现的问题</h1><p><a href="https://img.sosoos.com/i/2025/01/27/821909.webp">WSL文件夹从文件资源管理器中消失</a></p><p><a href="https://img.sosoos.com/i/2025/01/27/951926.webp">无法打开WSL命令行窗口，并且从其他命令行也无法正常实行WSL相关语句</a></p><h1>解决方案</h1><ol><li class="lvl-3"><p>找到C:\Windows.old\WINDOWS\System32\lxss\tools， 应该是能看到bzlimage文件，将该文件路径复制替换掉原来的.wslconfig文件中的bzlimage路径</p></li><li class="lvl-3"><p>以管理员权限打开powershell输入以下指令重新安装WSL</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --install -d &lt;你的linux系统版本&gt;</span><br></pre></td></tr></table></figure><h1>原理解释</h1><p>window11系统更新新建了一个windows.old文件夹并将一部分的旧文件挪到了这里，导致WSL的内核文件路径与原来设定的不吻合，因而无法打开wsl</p>]]></content>
       
       
+      <categories>
+          
+          <category> WSL相关问题 </category>
+          
+      </categories>
+      
       
     </entry>
     

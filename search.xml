@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>[关于win11系统更新导致的WSL错误]</title>
+      <link href="/2025/01/27/%E5%85%B3%E4%BA%8Ewin11%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E5%AF%BC%E8%87%B4%E7%9A%84WSL%E9%94%99%E8%AF%AF/"/>
+      <url>/2025/01/27/%E5%85%B3%E4%BA%8Ewin11%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E5%AF%BC%E8%87%B4%E7%9A%84WSL%E9%94%99%E8%AF%AF/</url>
+      
+        <content type="html"><![CDATA[<h1>win11系统出现的问题</h1><p><a href="https://img.sosoos.com/i/2025/01/27/821909.webp">WSL文件夹从文件资源管理器中消失</a></p><p><a href="https://img.sosoos.com/i/2025/01/27/951926.webp">无法打开WSL命令行窗口，并且从其他命令行也无法正常实行WSL相关语句</a></p><h1>解决方案</h1><ol><li class="lvl-3"><p>找到C:\Windows.old\WINDOWS\System32\lxss\tools， 应该是能看到bzlimage文件，将该文件路径复制替换掉原来的.wslconfig文件中的bzlimage路径</p></li><li class="lvl-3"><p>以管理员权限打开powershell输入以下指令重新安装WSL</p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --install -d &lt;你的linux系统版本&gt;</span><br></pre></td></tr></table></figure><h1>原理解释</h1><p>window11系统更新新建了一个windows.old文件夹并将一部分的旧文件挪到了这里，导致WSL的内核文件路径与原来设定的不吻合，因而无法打开wsl</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何搭建属于自己的静态博客网站</title>
       <link href="/2025/01/22/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/"/>
       <url>/2025/01/22/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</url>
@@ -17,12 +30,6 @@
           
       </categories>
       
-      
-        <tags>
-            
-            <tag> 博客教学 </tag>
-            
-        </tags>
       
     </entry>
     

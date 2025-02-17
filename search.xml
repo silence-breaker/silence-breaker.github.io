@@ -4,11 +4,30 @@
   
     
     <entry>
-      <title>基于HAL库的ADC模数转换器学习</title>
+      <title>HAL库函数汇总</title>
+      <link href="/2025/02/17/HAL%E5%BA%93%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB/"/>
+      <url>/2025/02/17/HAL%E5%BA%93%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB/</url>
+      
+        <content type="html"><![CDATA[<blockquote><h1>GPIO函数</h1><p>void HAL_GPIO_Init(GPIO_TypeDef <em>GPIOx, GPIO_InitTypeDef</em>GPIO_Init);</p><p>功能： GPIO初始化</p><p>实例：HAL_GPIO_Init(GPIOC, &amp;GPIO_InitStruct);</p><p>void HAL_GPIO_DeInit(GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin);</p><p>功能：在函数初始化之后的引脚恢复成默认的状态，即各个寄存器复位时的值</p><p>实例：HAL_GPIO_Init(GPIOC, GPIO_PIN_4);</p><p>GPIO_PinState HAL_GPIO_ReadPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);</p><p>功能：读取引脚的电平状态、函数返回值为0或1</p><p>实例：HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4);</p><p>void HAL_GPIO_WritePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState);</p><p>功能：引脚写0或1</p><p>实例：HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4,0);</p><p>void HAL_GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);</p><p>翻转引脚的电平状态</p><p>实例：HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_4);    常用在LED上</p><p>HAL_StatusTypeDef HAL_GPIO_LockPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);</p><p>功能：锁住引脚电平，比如说一个管脚的当前状态是1，当这个管脚电平变化时保持锁定时的值。</p><p>实例：HAL_GPIO_LockPin(GPIOC, GPIO_PIN_4);</p><p>void HAL_GPIO_EXTI_IRQHandler(uint16_t GPIO_Pin);</p><p>功能：  外部中断服务函数，清除中断标志位</p><p>实例：HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);</p><p>void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);</p><p>功能：  中断回调函数，可以理解为中断函数具体要响应的动作。</p><p>实例：HAL_GPIO_EXTI_Callback(GPIO_PIN_4);</p></blockquote><blockquote><h1>ADC:</h1><p>STM32一共有3个ADC ADC1,ADC2,ADC3</p><p>F4的ADC支持12位，10位，8位和6位精度，F1只支持12位</p><p>F1和F4都具有3个ADC，F1可提供21个输入通道，F4可以提供24个输入通道。</p><p>F1的ADC最大采样频率为1Msps，2路交替采样可到2Msps（F1不支持3路交替采样）。F4的ADC最大采样频率为2.4Msps，3路交替采样可到7.2Msps</p><p>在ADC初始化之后加上AD校准函数</p></blockquote> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MX_ADC1_Init();</span><br><span class="line">HAL_ADCEx_Calibration_Start(&amp;hadc1);    <span class="comment">//AD校准</span></span><br></pre></td></tr></table></figure><blockquote><p>在循环中：</p><p>HAL_ADC_Start(&amp;hadc1);     //启动ADC转换<br>HAL_ADC_PollForConversion(&amp;hadc1, 50);   //等待转换完成，50为最大等待时间，单位为ms</p><p>if(HAL_IS_BIT_SET(HAL_ADC_GetState(&amp;hadc1), HAL_ADC_STATE_REG_EOC))<br>{<br>ADC_Value = HAL_ADC_GetValue(&amp;hadc1);   //获取AD值}</p><p>中断读取：</p><p>如果使能了ADC转换结束中断，并且使能了定时器中断，可以这样写：</p><p>void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)    //定时器中断回调<br>{<br>HAL_ADC_Start_IT(&amp;hadc1); //定时器中断里面开启ADC中断转换，1ms开启一次采集<br>}</p><p>void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)    //ADC转换完成回调<br>{<br>HAL_ADC_Stop_IT(&amp;hadc1);    　　　　//关闭ADC<br>HAL_TIM_Base_Stop_IT(&amp;htim3);　　  //关闭定时器<br>AD_Value=HAL_ADC_GetValue(&amp;hadc1);　　//获取ADC转换的值</p><pre><code>printf(&quot;ADC1 Reading : %d \r\n&quot;,AD_Value);printf(&quot;%.4f V\r\n&quot;,(AD_Value*3.3/4096));　　　  //串口打印电压信息HAL_TIM_Base_Start_IT(&amp;htim3); 　　　　  //开启定时器</code></pre><p>}</p><p>开启ADC 3种模式 ( 轮询模式 中断模式 DMA模式 ）</p><p>• HAL_ADC_Start(&amp;hadcx);       //轮询模式开启ADC<br>• HAL_ADC_Start_IT(&amp;hadcx);       //中断轮询模式开启ADC<br>• HAL_ADC_Start_DMA(&amp;hadcx)；       //DMA模式开启ADC</p><p>关闭ADC 3种模式 ( 轮询模式 中断模式 DMA模式 ）</p><p>• HAL_ADC_Stop()<br>• HAL_ADC_Stop_IT()<br>• HAL_ADC_Stop_DMA()</p><p>ADC校准函数 ：</p><p>• HAL_ADCEx_Calibration_Start(&amp;hadcx);</p><p>F4系列不支持</p><p>读取ADC转换值</p><p>• HAL_ADC_GetValue()</p><p>等待转换结束函数</p><p>• HAL_ADC_PollForConversion(&amp;hadc1, 50);</p><p>第一个参数为那个ADC,第二个参数为最大等待时间</p><p>ADC中断回调函数<br>• HAL_ADC_ConvCpltCallback()</p><p>转换完成后回调，DMA模式下DMA传输完成后调用</p><p>规则通道及看门狗配置</p><p>• HAL_ADC_ConfigChannel() 配置规则组通道<br>• HAL_ADC_AnalogWDGConfig()</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> STM32F103C8T6学习 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>基于HAL库的ADC模数转换器+DMA学习</title>
       <link href="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
       <url>/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8%E5%AD%A6%E4%B9%A0/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h1>网络教程</h1><p><a href="https://blog.csdn.net/as480133937/article/details/99627062">CSDN</a></p><table><thead><tr><th>函数名 (参数)</th><th>用途</th></tr></thead><tbody><tr><td>HAL_ADC_Start (ADC_HandleTypeDef* hadc)</td><td>启动ADC转换</td></tr><tr><td>HAL_ADC_Stop (ADC_HandleTypeDef* hadc)</td><td>停止ADC转换</td></tr><tr><td>HAL_ADC_PollForConversion (ADC_HandleTypeDef* hadc, uint32_t Timeout)</td><td>轮询ADC转换完成</td></tr><tr><td>HAL_ADC_GetValue (ADC_HandleTypeDef* hadc)</td><td>获取ADC转换结果</td></tr><tr><td>HAL_ADC_ConfigChannel (ADC_HandleTypeDef<em>hadc, ADC_ChannelConfTypeDef</em> sConfig)</td><td>配置ADC通道</td></tr><tr><td>HAL_ADC_GetState (ADC_HandleTypeDef* hadc)</td><td>获取ADC状态  输出的是16为寄存器数值，通常为16进制</td></tr><tr><td>HAL_ADC_GetError (ADC_HandleTypeDef* hadc)</td><td>获取ADC错误状态</td></tr></tbody></table>]]></content>
       
       
       <categories>
@@ -122,7 +141,7 @@
       <link href="/2025/01/27/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E5%AD%A6%E4%B9%A0STM32%E6%95%99%E7%A8%8B%E6%B1%87%E6%80%BB/"/>
       <url>/2025/01/27/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E5%AD%A6%E4%B9%A0STM32%E6%95%99%E7%A8%8B%E6%B1%87%E6%80%BB/</url>
       
-        <content type="html"><![CDATA[<p><a href="https://blog.csdn.net/Xiaomo_haa/article/details/107448812">HAL库开发之通用定时器中断</a></p><p><a href="https://blog.csdn.net/u010586942/article/details/117489420">关于VScode打开Cubemx直接生成的工程出现报错的解决方法</a></p>]]></content>
+        <content type="html"><![CDATA[<p><a href="https://blog.csdn.net/Xiaomo_haa/article/details/107448812">HAL库开发之通用定时器中断</a></p><p><a href="https://blog.csdn.net/u010586942/article/details/117489420">关于VScode打开Cubemx直接生成的工程出现报错的解决方法</a></p><p><a href="https://blog.csdn.net/qq_38531460/article/details/106115070">HAL库函数汇总</a></p>]]></content>
       
       
       <categories>

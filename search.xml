@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>USART串口通信学习</title>
+      <link href="/2025/02/21/USART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2025/02/21/USART%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> STM32F103C8T6学习 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>HAL库函数汇总</title>
       <link href="/2025/02/17/HAL%E5%BA%93%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB/"/>
       <url>/2025/02/17/HAL%E5%BA%93%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB/</url>
@@ -27,7 +46,7 @@
       <link href="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/"/>
       <url>/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/</url>
       
-        <content type="html"><![CDATA[<h1>网络教程</h1><p><a href="https://blog.csdn.net/as480133937/article/details/99627062">CSDN-ADC教程</a><br><a href="https://blog.csdn.net/linzhe_deep/article/details/105957191">CSDN-ADC+DMA</a></p><table><thead><tr><th>函数名 (参数)</th><th>用途</th></tr></thead><tbody><tr><td>HAL_ADC_Start (ADC_HandleTypeDef* hadc)</td><td>启动ADC转换</td></tr><tr><td>HAL_ADC_Stop (ADC_HandleTypeDef* hadc)</td><td>停止ADC转换</td></tr><tr><td>HAL_ADC_PollForConversion (ADC_HandleTypeDef* hadc, uint32_t Timeout)</td><td>轮询ADC转换完成，校准ADC，每次使用前都要调用一次</td></tr><tr><td>HAL_ADC_GetValue (ADC_HandleTypeDef* hadc)</td><td>获取ADC转换结果</td></tr><tr><td>HAL_ADC_ConfigChannel (ADC_HandleTypeDef<em>hadc, ADC_ChannelConfTypeDef</em> sConfig)</td><td>配置ADC通道</td></tr><tr><td>HAL_ADC_GetState (ADC_HandleTypeDef* hadc)</td><td>获取ADC状态  输出的是16为寄存器数值，通常为16进制</td></tr><tr><td>HAL_ADC_GetError (ADC_HandleTypeDef* hadc)</td><td>获取ADC错误状态</td></tr><tr><td>HAL_ADC_Start_DMA(&amp;hadc,(uint32_t*)数组指针,通道数)</td><td>开启ADC与DMA结合模式</td></tr></tbody></table><h1>结构框图</h1><p><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/2.jpg" alt="alt text"><br><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/3.jpg" alt="alt text"><br><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/1.jpg" alt="alt text"><br><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/4.jpg" alt="alt text"></p><h1>使用ADC+DMA检测</h1><ul class="lvl-0"><li class="lvl-2"><p>ADC与DMA转换的位数应该相同(一般是uint16_t)</p></li><li class="lvl-2"><p>设置ADC与DMA参数，DMA为循环模式</p></li><li class="lvl-2"><p>采用定时器中断OLED输出ADC值，而不是放到while循环中，因为CPU处理不过来，OLED会直接不显示</p></li><li class="lvl-2"><p>定义全局变量数组存储DMA转运数据，防止程序运行过程中内存占用冲突</p></li></ul><h2 id="存在问题">存在问题</h2><p>DMA转运过来输出的数据一摸一样，不知道为什么</p>]]></content>
+        <content type="html"><![CDATA[<h1>网络教程</h1><p><a href="https://blog.csdn.net/as480133937/article/details/99627062">CSDN-ADC教程</a><br><a href="https://blog.csdn.net/linzhe_deep/article/details/105957191">CSDN-ADC+DMA</a></p><table><thead><tr><th>函数名 (参数)</th><th>用途</th></tr></thead><tbody><tr><td>HAL_ADC_Start (ADC_HandleTypeDef* hadc)</td><td>启动ADC转换</td></tr><tr><td>HAL_ADC_Stop (ADC_HandleTypeDef* hadc)</td><td>停止ADC转换</td></tr><tr><td>HAL_ADC_PollForConversion (ADC_HandleTypeDef* hadc, uint32_t Timeout)</td><td>轮询ADC转换完成，校准ADC，每次使用前都要调用一次</td></tr><tr><td>HAL_ADC_GetValue (ADC_HandleTypeDef* hadc)</td><td>获取ADC转换结果</td></tr><tr><td>HAL_ADC_ConfigChannel (ADC_HandleTypeDef<em>hadc, ADC_ChannelConfTypeDef</em> sConfig)</td><td>配置ADC通道</td></tr><tr><td>HAL_ADC_GetState (ADC_HandleTypeDef* hadc)</td><td>获取ADC状态  输出的是16为寄存器数值，通常为16进制</td></tr><tr><td>HAL_ADC_GetError (ADC_HandleTypeDef* hadc)</td><td>获取ADC错误状态</td></tr><tr><td>HAL_ADC_Start_DMA(&amp;hadc,(uint32_t*)数组指针,通道数)</td><td>开启ADC与DMA结合模式</td></tr></tbody></table><h1>结构框图</h1><p><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/2.jpg" alt="alt text"><br><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/3.jpg" alt="alt text"><br><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/1.jpg" alt="alt text"><br><img src="/2025/02/17/%E5%9F%BA%E4%BA%8EHAL%E5%BA%93%E7%9A%84ADC%E6%A8%A1%E6%95%B0%E8%BD%AC%E6%8D%A2%E5%99%A8+DMA%E5%AD%A6%E4%B9%A0/4.jpg" alt="alt text"></p><h1>使用ADC+DMA检测</h1><ul class="lvl-0"><li class="lvl-2"><p>ADC与DMA转换的位数应该相同(一般是uint16_t)</p></li><li class="lvl-2"><p>设置ADC与DMA参数，DMA为循环模式</p></li><li class="lvl-2"><p>采用定时器中断OLED输出ADC值，而不是放到while循环中，因为CPU处理不过来，OLED会直接不显示</p></li><li class="lvl-2"><p>定义全局变量数组存储DMA转运数据，防止程序运行过程中内存占用冲突</p></li></ul><h2 id="存在问题">存在问题</h2><p>DMA转运过来输出的数据一模一样，不知道为什么</p><ul class="lvl-0"><li class="lvl-2"><p>后面发现是转换通道数(Number of Conversion)没有设置为实际的通道数，但是开了之后虽然数据有差别，但还是只跟着一个传感器动</p></li></ul>]]></content>
       
       
       <categories>

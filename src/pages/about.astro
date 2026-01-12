@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="关于 - WJ Blog">
+  <div class="container">
+    <article class="about-page">
+      <h1 class="fade-in">关于我</h1>
+      
+      <section class="about-content slide-in">
+        <p>欢迎来到我的技术博客!</p>
+        
+        <p>这里主要分享:</p>
+        <ul>
+          <li>编程技术与开发经验</li>
+          <li>WSL相关问题解决方案</li>
+          <li>线性代数学习笔记</li>
+          <li>其他技术探索与实践</li>
+        </ul>
+        
+        <h2>技术栈</h2>
+        <p>本博客使用以下技术构建:</p>
+        <ul>
+          <li><strong>Astro</strong> - 现代化静态网站生成器</li>
+          <li><strong>KaTeX</strong> - 数学公式渲染</li>
+          <li><strong>Shiki</strong> - 代码语法高亮</li>
+          <li><strong>GitHub Pages</strong> - 网站托管</li>
+        </ul>
+        
+        <h2>联系方式</h2>
+        <p>如果您有任何问题或建议,欢迎通过以下方式联系我:</p>
+        <ul>
+          <li>博客: <a href="https://www.wj-blog.top">www.wj-blog.top</a></li>
+        </ul>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .about-content {
+    line-height: 1.8;
+  }
+
+  .about-content h2 {
+    margin-top: var(--space-xl);
+    color: var(--color-text);
+  }
+
+  .about-content ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .about-content li {
+    padding-left: var(--space-lg);
+    position: relative;
+    margin-bottom: var(--space-sm);
+  }
+
+  .about-content li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: bold;
+  }
+</style>

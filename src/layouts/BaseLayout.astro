@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { getCollection } from 'astro:content';
+import SearchBox from '../components/SearchBox.tsx';
 
 interface Props {
   title: string;
@@ -7,6 +9,15 @@ interface Props {
 }
 
 const { title, description = '技术博客 - 分享编程、WSL、线性代数等技术文章' } = Astro.props;
+
+// Get posts data for search
+const posts = await getCollection('posts');
+const searchPosts = posts.map(post => ({
+  slug: post.slug,
+  title: post.data.title,
+  date: post.data.date.toISOString(),
+  categories: post.data.categories || ''
+}));
 ---
 
 <!DOCTYPE html>
@@ -39,6 +50,7 @@ const { title, description = '技术博客 - 分享编程、WSL、线性代数�
         <div class="nav-links">
           <a href="/" class="nav-link">首页</a>
           <a href="/about" class="nav-link">关于</a>
+          <SearchBox posts={searchPosts} client:load />
         </div>
       </div>
     </nav>

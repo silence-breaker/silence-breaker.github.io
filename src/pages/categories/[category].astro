@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const categories = [...new Set(posts.map(post => post.data.categories).filter(Boolean))];
+  
+  return categories.map(category => ({
+    params: { category: category as string },
+    props: { 
+      category,
+      posts: posts.filter(post => post.data.categories === category)
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    }
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout title={`${category} - WJ Blog`}>
+  <div class="container">
+    <div class="category-header">
+      <a href="/" class="back-link">← 返回分类</a>
+      <h1 class="category-title">{category}</h1>
+      <p class="article-count">共 {posts.length} 篇文章</p>
+    </div>
+
+    <div class="posts-grid">
+      {posts.map((post: any) => (
+        <article class="post-card">
+          <a href={`/posts/${post.slug}`} class="post-link">
+            <h2 class="post-title">{post.data.title}</h2>
+            <time class="post-date">
+              {new Intl.DateTimeFormat('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              }).format(post.data.date)}
+            </time>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .category-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: var(--space-md);
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .back-link:hover {
+    opacity: 0.8;
+  }
+
+  .category-title {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-sm);
+  }
+
+  .article-count {
+    color: var(--color-text-secondary);
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .post-card {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+  }
+
+  .post-link {
+    display: block;
+    padding: var(--space-lg);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .post-title {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+  }
+</style>

@@ -3,7 +3,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('posts');
-const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group posts by category
+const categoryMap = new Map<string, typeof posts>();
+posts.forEach(post => {
+  const category = post.data.categories || '未分类';
+  if (!categoryMap.has(category)) {
+    categoryMap.set(category, []);
+  }
+  categoryMap.get(category)!.push(post);
+});
+
+// Convert to array and sort by post count
+const categories = Array.from(categoryMap.entries())
+  .map(([name, posts]) => ({ name, count: posts.length }))
+  .sort((a, b) => b.count - a.count);
+
+// Category icons/colors
+const categoryStyles: Record<string, { icon: string; gradient: string }> = {
+  '网络安全': { icon: '🛡️', gradient: 'linear-gradient(135deg, #f97316, #ef4444)' },
+  'WSL相关问题': { icon: '🖥️', gradient: 'linear-gradient(135deg, #8b5cf6, #6366f1)' },
+  '线性代数': { icon: '📐', gradient: 'linear-gradient(135deg, #10b981, #14b8a6)' },
+  '初学hexo': { icon: '📝', gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)' },
+  '未分类': { icon: '📁', gradient: 'linear-gradient(135deg, #6b7280, #9ca3af)' },
+};
 ---
 
 <BaseLayout title="WJ Blog - 首页">
@@ -13,31 +36,45 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
       <p class="hero-description slide-in">分享编程、WSL、线性代数等技术文章</p>
     </section>
 
-    <section class="posts-grid">
-      {sortedPosts.map((post) => {
-        const formattedDate = new Intl.DateTimeFormat('zh-CN', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }).format(post.data.date);
-
-        return (
-          <article class="post-card">
-            <a href={`/posts/${post.slug}`} class="post-link">
-              <h2 class="post-card-title">{post.data.title}</h2>
-              <div class="post-card-meta">
-                <time datetime={post.data.date.toISOString()}>{formattedDate}</time>
-                {post.data.categories && (
-                  <>
-                    <span class="separator">•</span>
-                    <span class="category">{post.data.categories}</span>
-                  </>
-                )}
+    <section class="categories-section">
+      <h2 class="section-title">📚 文章分类</h2>
+      <div class="categories-grid">
+        {categories.map(({ name, count }) => {
+          const style = categoryStyles[name] || categoryStyles['未分类'];
+          return (
+            <a href={`/categories/${name}`} class="category-card">
+              <div class="category-icon" style={`background: ${style.gradient}`}>
+                {style.icon}
               </div>
+              <div class="category-info">
+                <h3 class="category-name">{name}</h3>
+                <p class="category-count">{count} 篇文章</p>
+              </div>
+              <div class="category-arrow">→</div>
             </a>
-          </article>
-        );
-      })}
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="recent-section">
+      <h2 class="section-title">🕐 最新文章</h2>
+      <div class="recent-posts">
+        {posts
+          .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+          .slice(0, 3)
+          .map(post => (
+            <a href={`/posts/${post.slug}`} class="recent-post">
+              <span class="recent-title">{post.data.title}</span>
+              <span class="recent-date">
+                {new Intl.DateTimeFormat('zh-CN', {
+                  month: 'short',
+                  day: 'numeric'
+                }).format(post.data.date)}
+              </span>
+            </a>
+          ))}
+      </div>
     </section>
   </div>
 </BaseLayout>
@@ -46,7 +83,7 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
   .hero {
     text-align: center;
     padding: var(--space-2xl) 0;
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-xl);
   }
 
   .hero-title {
@@ -61,66 +98,121 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
     margin: 0 auto;
   }
 
-  .posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--space-lg);
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text);
+  }
+
+  .categories-section {
     margin-bottom: var(--space-2xl);
   }
 
-  .post-card {
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .category-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg);
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: var(--space-lg);
-    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
     box-shadow: var(--shadow-sm);
   }
 
-  .post-card:hover {
+  .category-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
     border-color: var(--color-primary);
   }
 
-  .post-link {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .post-card-title {
-    font-size: 1.5rem;
-    margin-bottom: var(--space-sm);
-    color: var(--color-text);
-    transition: color var(--transition-fast);
-  }
-
-  .post-card:hover .post-card-title {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .post-card-meta {
+  .category-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
-    gap: var(--space-sm);
-    color: var(--color-text-secondary);
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .category-info {
+    flex: 1;
+  }
+
+  .category-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--color-text);
+  }
+
+  .category-count {
     font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin: 0;
   }
 
-  .separator {
-    color: var(--color-border);
+  .category-arrow {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
   }
 
-  .category {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.8rem;
+  .category-card:hover .category-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--color-primary);
+  }
+
+  .recent-section {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .recent-posts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 600px;
+  }
+
+  .recent-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .recent-post:hover {
+    border-color: var(--color-primary);
+    background: rgba(99, 102, 241, 0.05);
+  }
+
+  .recent-title {
     font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .recent-date {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
   }
 
   @media (max-width: 768px) {
@@ -132,7 +224,7 @@ const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.get
       font-size: 1rem;
     }
 
-    .posts-grid {
+    .categories-grid {
       grid-template-columns: 1fr;
     }
   }
